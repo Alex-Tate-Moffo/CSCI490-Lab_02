@@ -1,7 +1,10 @@
 package com.example.intentdemo;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static final int REQUEST_CODE = 1;
 
     private Button button;
     private Intent i;
@@ -30,12 +35,33 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String s = editText.getText().toString();
-                Log.i("MainActivity", "String: " + s);
+                //Log.i("MainActivity", "String: " + s);
                 i.putExtra("testString", s);
 
+                // PART 1
                 startActivity(i);
+
+                // PART 2
+                startActivityForResult(i, REQUEST_CODE);
             }
         });
 
+    }
+
+    // PART 2
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            Bundle extras = data.getExtras();
+            if (extras != null) {
+
+                int imageId = extras.getInt("ImageID");
+
+                ConstraintLayout currentLayout = findViewById(R.id.main_layout);
+                currentLayout.setBackground(getDrawable(imageId));
+            }
+        }
     }
 }

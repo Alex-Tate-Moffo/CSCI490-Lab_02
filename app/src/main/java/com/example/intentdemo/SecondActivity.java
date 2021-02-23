@@ -22,10 +22,16 @@ public class SecondActivity extends AppCompatActivity {
         String s = i.getExtras().getString("testString");
 
         textView2 = findViewById(R.id.textView2);
-
         textView2.setText(s);
 
     }
 
+    @Override
+    public void finish() {
+        Intent intent = new Intent();
+        intent.putExtra("ImageID", imageID);
 
+        setResult(RESULT_OK, intent);
+        super.finish();
+    }
 }
